@@ -11,7 +11,7 @@ f2 = Lorentzian(T_x,-0.0342,0.0163,614);  %     T_x,-0.0342,0.0163,614
 
 Tt_deb=f1+f2;
 
-plot(T_x,f1,T_x,f2,T_x,Tt_deb);
+%plot(T_x,f1,T_x,f2,T_x,Tt_deb);
 
 
 
