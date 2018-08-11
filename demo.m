@@ -13,7 +13,6 @@ miu_t=interp1(fermi_x,mt,Vt);
 global T_x
 global Tdos_deb
 global T_deb
-global T_deb1
 global Tt_deb
 global Tdost_deb
 tic
@@ -37,7 +36,7 @@ occup_deb=occup(T_x,miu_t,miu_b,Vi); %sampled momentum(band structure) using int
 %    occup_deb=zeros
 
 %Tdos_deb=Tdos_deb/1e56;
-stack=Tdost_deb.*occup_deb.*T_deb1;   %  .*T_deb
+stack=Tdost_deb.*occup_deb.*T_deb;   %  .*T_deb
 stack(isnan(stack))=0;
 output=sum(stack);output=output*1/10000;
 E_series=(((1:1:20000)-10000)*1/10000)';
