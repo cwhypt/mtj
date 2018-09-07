@@ -16,12 +16,12 @@ a0_Vc(277:828,1)=-0.12;
 a0_Vc(829:1104,1)=4;
 a0_Vc(1105:1656,1)=-0.12;
 a0_Vc(1657:1932,1)=4;
-%a0_Vc=a0_Vc+linspace(1,3000,3000)'./1932.*a5_alpha.*0.3; %单位？
+a0_Vc=a0_Vc+linspace(1,3000,3000)'./1932.*a5_alpha.*0.3; %单位？
 %plot(a0_Vc)
 
 % 定义每一步长度  Defines the number of steps(in 1/2 step)
 z_length=1932;
-z_spacing=69;    %69
+z_spacing=2;    %69
 global a1_M
 a1_M=floor(z_length/z_spacing);
 

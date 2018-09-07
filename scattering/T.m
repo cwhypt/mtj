@@ -41,9 +41,10 @@ a2_Vd=a2_Vd*e;
 global a3_E
 %a3_E_1=0.31158
 a3_E=a3_E_1*e; %实际能量？
-global a4_theta
-a4_theta=0;
-
+global a4_theta1
+global a4_theta2
+a4_theta1=0;
+a4_theta2=0;
 %% 定义B matrix
 % 定义 B
 b0_Ul=0;
@@ -73,8 +74,8 @@ b1_Br=[b1_Br_11 b1_Br_12;b1_Br_21 b1_Br_22];
 clear -regexp ^b1_Bl_
 clear -regexp ^b1_Br_
 %% 定义D(x)
-D0_21_first=me*0.5*e/(hbar)^2*(sin(a4_theta+pi).*sigma_x +cos(a4_theta+pi).*sigma_z);
-D0_21_second=me*0.5*e/(hbar)^2*(sin(a4_theta).*sigma_x +cos(a4_theta).*sigma_z);
+D0_21_first=me*0.5*e/(hbar)^2*(sin(a4_theta1+pi).*sigma_x +cos(a4_theta1+pi).*sigma_z);
+D0_21_second=me*0.5*e/(hbar)^2*(sin(a4_theta2).*sigma_x +cos(a4_theta2).*sigma_z);
 
 D0=[zeros(2) eye(2);zeros(2) zeros(2)];
 D1_D=zeros(a1_M*4+4,4);
@@ -111,9 +112,10 @@ Tm=eye(4);
 A_in=[1/sqrt(2)*exp(2i);1/sqrt(2);0;0];
 
 Psi=zeros(a1_M/2+1,4);
-Psi(1,:)=(b1_Bl*A_in)';
+P1=(b1_Bl*A_in)';
+Psi(1,:)=P1;
 for j=1:1:a1_M/2
-Tm=Tm*D2_T(4*j-3:4*j,:);
+Tm=D2_T(4*j-3:4*j,:)*Tm;
 Psi(j+1,:)=(D2_T(4*j-3:4*j,:)*Psi(j,:)')';
 end
 Tau=Tm*b1_Bl;
