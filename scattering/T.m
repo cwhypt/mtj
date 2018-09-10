@@ -1,6 +1,7 @@
 function [P_up,P_down]=T(a3_E_1)
 %% 定义基本量
 % Assume the width is 3 nm
+global flag0
 
 global a5_alpha
 a5_alpha=0.05;
@@ -31,11 +32,11 @@ a2_loc=linspace(0,a1_M,a1_M+1)'.*z_spacing;
 a2_Vd=interp1(linspace(1,3000,3000)',a0_Vc,a2_loc);
 a2_Vd(1,1)=a2_Vd(6,1);
 a2_Vd(2,1)=a2_Vd(6,1);
-figure(2)
 
 
 a2_Vd=a2_Vd*e;
 
+flag0.update('Update potential');
 %% 可调参数
 % 定义scattering 能量
 global a3_E
@@ -63,7 +64,7 @@ b1_Bl_22=-1i*b1_kl.*eye(2);
 
 b1_Bl=[b1_Bl_11 b1_Bl_12;b1_Bl_21 b1_Bl_22];
 
-b0_x_R=1932e-12;
+b0_x_R=z_length*1e-12;
 b1_Br_11=exp(-1i*b1_kr*b0_x_R)*eye(2);
 b1_Br_12=exp(1i*b1_kr*b0_x_R)*eye(2);
 b1_Br_21=-1i*exp(-1i*b1_kr*b0_x_R)*b1_kr.*eye(2);
@@ -71,27 +72,39 @@ b1_Br_22=1i*exp(1i*b1_kr*b0_x_R)*b1_kr.*eye(2);
 
 b1_Br=[b1_Br_11 b1_Br_12;b1_Br_21 b1_Br_22];
 
+flag0.update('Construct B');
 clear -regexp ^b1_Bl_
 clear -regexp ^b1_Br_
 %% 定义D(x)
-D0_21_first=me*0.5*e/(hbar)^2*(sin(a4_theta1+pi).*sigma_x +cos(a4_theta1+pi).*sigma_z);
-D0_21_second=me*0.5*e/(hbar)^2*(sin(a4_theta2).*sigma_x +cos(a4_theta2).*sigma_z);
+D0_21_first=me*0.5*e/(hbar)^2*(sin(a4_theta1+pi).*sigma_x +cos(a4_theta1+pi).*[0 0;0 -1].*2);  %sigma_z   0.5
+D0_21_second=me*0.5*e/(hbar)^2*(sin(a4_theta2).*sigma_x +cos(a4_theta2).*[1 0; 0 0].*2);
 
 D0=[zeros(2) eye(2);zeros(2) zeros(2)];
 D1_D=zeros(a1_M*4+4,4);
+D1_D_up=zeros(a1_M+1,1);
+D1_D_down=zeros(a1_M+1,1);
 for j=1:1:a1_M+1
 D0_it=D0;
 
-if (j-1)*z_spacing>=277 && (j-1)*z_spacing<828
+if (j-1)*z_spacing>=277 && (j-1)*z_spacing<=828
     D0_it(3:4,1:2)=D0_21_first;
-elseif (j-1)*z_spacing>=1105 && (j-1)*z_spacing<1656
+elseif (j-1)*z_spacing>=1105 && (j-1)*z_spacing<=1656
     D0_it(3:4,1:2)=D0_21_second;
 end
 
 D0_tmp=-2.*me./hbar^2.*(a3_E-a2_Vd(j,1)).*eye(2);
 D0_it(3:4,1:2)=D0_it(3:4,1:2)+D0_tmp;
 D1_D((4*j-3):4*j,1:4)=D0_it;
+D1_D_up(j,1)=D0_it(3,1);
+D1_D_down(j,1)=D0_it(4,2);
 end
+
+flag0.update('Form each D');
+
+flag0.plot2(1,(0:z_spacing:1932)',D1_D_up ,D1_D_down,'Xlabel','X (0-1992pm)','Ylabel','Energy','title','Potential at 0.5eV spin splitting','save','false' );
+
+%-------------------------------------检查
+
 
 D2_T=zeros(a1_M*2,4);
 for j=0:1:a1_M/2-1
@@ -106,7 +119,8 @@ for j=0:1:a1_M/2-1
 D2_T((4*j+1):4*j+4,1:4)=eye(4)+deltax/6.*(D2_D1+2*D2_D2+2*D2_D3+D2_D4);
 end
 clear -regexp ^D2_D
-
+ flag0.update('Transform T');
+ 
 Tm=eye(4);
 
 A_in=[1/sqrt(2)*exp(2i);1/sqrt(2);0;0];
@@ -129,23 +143,17 @@ A_out=M*A_in;
 Prob=conj(A_out).*A_out
 P_up=Prob(3);P_down=Prob(4);
 
+Psi_x=0:z_spacing*2:1932;
 Psi_real=conj(Psi).*Psi;
-close(figure(2))
-figure(2)
-plot(Psi_real(:,1));
-hold on 
-s2=plot(Psi_real(:,2));
-legend('P-up','P-down')
-title(sprintf('Wavefunction at incident energy E=%d',a3_E_1))
-xlabel('X (0-1992pm)')
-ylabel('Wavefunction')
-dim = [.2 .5 .3 .3];
-str = sprintf('T-up: %0.1e,T-down: %0.1e',Prob(3,1),Prob(4,1));
-t1=annotation('textbox',dim,'String',str,'FitBoxToText','on');
-saveas(s2,sprintf('C:\\Users\\cwhypt\\Documents\\MATLAB\\pic\\Wavefcn_%0.5f.jpg',a3_E_1));
 
-hold off
+ flag0.update('Data manipulation');
+
+str = sprintf('T-up: %0.1e,T-down: %0.1e',Prob(3,1),Prob(4,1));
+flag0.plot2(2,Psi_x',Psi_real(:,1) ,Psi_real(:,2),'Xlabel','X (0-1992pm)','Ylabel','Wavefunction','title',sprintf('Wavefunction at incident energy E=%d',a3_E_1),'save','true','annotation',str);
+
+
 %clear me e hbar
 clear -regexp ^sigma_
 
+ flag0.update('End');
 end
