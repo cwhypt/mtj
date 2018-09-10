@@ -121,9 +121,40 @@ end
 clear -regexp ^D2_D
  flag0.update('Transform T');
  
+ 
+Tau=Tm*b1_Bl;
+M_1=[Tau(1,2) -b1_Br(1,2); -Tau(2,2) b1_Br(2,2)];
+M_2=[-Tau(1,1) b1_Br(1,1); Tau(2,1) -b1_Br(2,1)];
+M=M_1\M_2;
+A_out=M*A_in;
+
+A_l=[1;A_out(1,1)];      % Compute wavefunctions
+Psi=zeros(a1_M/2+1,2);
+Psi_0=(b1_Bl*A_l)';
+Psi(1,:)=Psi_0;
+for j=1:1:a1_M/2
+Psi(j+1,:)=(D2_T(2*j-1:2*j,:)*Psi(j,:)')';
+end
+
+Prob=conj(A_out).*A_out
+P_up=Prob(2);P_down=Prob(2);
+
+Psi_x=0:z_spacing*2:z_length;
+Psi_real=conj(Psi).*Psi;
+
+
 Tm=eye(4);
 
-A_in=[1/sqrt(2)*exp(2i);1/sqrt(2);0;0];
+A_in=[1/sqrt(2);1/sqrt(2);0;0];
+
+for j=1:1:a1_M/2
+Tm=D2_T(4*j-3:4*j,:)*Tm;
+end
+
+Tau=Tm*b1_Bl;
+M_1=[Tau(1:2,3:4) -b1_Br(1:2,3:4); -Tau(3:4,3:4) b1_Br(3:4,3:4)];
+M_2=[-Tau(1:2,1:2) b1_Br(1:2,1:2); Tau(3:4,1:2) -b1_Br(3:4,1:2)];
+M=M_1\M_2;
 
 Psi=zeros(a1_M/2+1,4);
 P1=(b1_Bl*A_in)';
@@ -148,23 +179,10 @@ Psi_real=conj(Psi).*Psi;
 
  flag0.update('Data manipulation');
 
-flag0.plot2(2,Psi_x',Psi_real(:,1) ,Psi_real(:,2),'Xlabel','X (0-1992pm)','Ylabel','Wavefunction','title',sprintf('Wavefunction at incident energy E=%d',a3_E_1),'save','false' );
-
-clf(figure(2))
-figure(2)
-plot(Psi_x',Psi_real(:,1));
-hold on 
-s2=plot(Psi_x',Psi_real(:,2));
-legend('P-up','P-down')
-title(sprintf('Wavefunction at incident energy E=%d',a3_E_1))
-xlabel('X (0-1992pm)')
-ylabel('Wavefunction')
-dim = [.2 .5 .3 .3];
 str = sprintf('T-up: %0.1e,T-down: %0.1e',Prob(3,1),Prob(4,1));
-t1=annotation('textbox',dim,'String',str,'FitBoxToText','on');
-saveas(s2,sprintf('C:\\Users\\cwhypt\\Documents\\MATLAB\\pic\\2-Wavefcn_%0.5f.jpg',a3_E_1));
+flag0.plot2(2,Psi_x',Psi_real(:,1) ,Psi_real(:,2),'Xlabel','X (0-1992pm)','Ylabel','Wavefunction','title',sprintf('Wavefunction at incident energy E=%d',a3_E_1),'save','true','annotation',str);
 
-hold off
+
 %clear me e hbar
 clear -regexp ^sigma_
 

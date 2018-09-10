@@ -1,10 +1,10 @@
-T_x=linspace(0,1,101);
-T_sc=zeros(101,2);
+T_x=linspace(0,5,51);
+T_sc=zeros(51,2);
 count=1;
 global flag0
 flag0=flag;
-for j=0:0.01:1
-    [T_sc(count,1),T_sc(count,2)]=T_2x2(j);
+for j=0:0.1:5
+    [T_sc(count,1),T_sc(count,2)]=T(j);
         count=count+1;
 end
 

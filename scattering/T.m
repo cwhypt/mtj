@@ -123,27 +123,30 @@ clear -regexp ^D2_D
  
 Tm=eye(4);
 
-A_in=[1/sqrt(2)*exp(2i);1/sqrt(2);0;0];
+A_in=[1/sqrt(2);1/sqrt(2);0;0];
 
-Psi=zeros(a1_M/2+1,4);
-P1=(b1_Bl*A_in)';
-Psi(1,:)=P1;
 for j=1:1:a1_M/2
 Tm=D2_T(4*j-3:4*j,:)*Tm;
-Psi(j+1,:)=(D2_T(4*j-3:4*j,:)*Psi(j,:)')';
 end
+
 Tau=Tm*b1_Bl;
 M_1=[Tau(1:2,3:4) -b1_Br(1:2,3:4); -Tau(3:4,3:4) b1_Br(3:4,3:4)];
 M_2=[-Tau(1:2,1:2) b1_Br(1:2,1:2); Tau(3:4,1:2) -b1_Br(3:4,1:2)];
-
 M=M_1\M_2;
 
-
 A_out=M*A_in;
+A_l=[1/sqrt(2);1/sqrt(2);A_out(1:2,1)];      % Compute wavefunctions
+Psi=zeros(a1_M/2+1,4);
+P1=(b1_Bl*A_l)';
+Psi(1,:)=P1;
+for j=1:1:a1_M/2
+Psi(j+1,:)=(D2_T(4*j-3:4*j,:)*Psi(j,:)')';
+end
+
 Prob=conj(A_out).*A_out
 P_up=Prob(3);P_down=Prob(4);
 
-Psi_x=0:z_spacing*2:1932;
+Psi_x=0:z_spacing*z_length;
 Psi_real=conj(Psi).*Psi;
 
  flag0.update('Data manipulation');
