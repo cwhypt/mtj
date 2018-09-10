@@ -1,27 +1,24 @@
-function [P_up,P_down]=T_2x2(a3_E_1)
+function [P_up,P_down]=T_2x2_random(a3_E_1)
 %% 定义基本量
 % Assume the width is 3 nm
 global flag0
 
-global a5_alpha
-a5_alpha=0.05;
 global z_spacing
 
 me=9.11e-31;e=1.6e-19;hbar=1.054e-34;
 sigma_x=[0 1;1 0]; sigma_y=[0 -1i;1i 0]; sigma_z=[1 0;0 -1];
 %global a0_Vc
-a0_Vc=zeros(3000,1);
+a0_Vc=zeros(2000,1);
 
-a0_Vc(1:276,1)=4;
-a0_Vc(277:828,1)=-0.12;
-a0_Vc(829:1104,1)=4;
-a0_Vc(1105:1656,1)=-0.12;
-a0_Vc(1657:1932,1)=4;
-a0_Vc=a0_Vc+linspace(1,3000,3000)'./1932.*a5_alpha.*0.3; %单位？
+a0_Vc(1:500,1)=0;
+a0_Vc(501:1500,1)=-0.3;
+a0_Vc(1501:2000,1)=0;
+
+
 %plot(a0_Vc)
 
 % 定义每一步长度  Defines the number of steps(in 1/2 step)
-z_length=1932;
+z_length=2000;
 z_spacing=2;    %69
 global a1_M
 a1_M=floor(z_length/z_spacing);
@@ -29,7 +26,7 @@ a1_M=floor(z_length/z_spacing);
 global a2_loc
 global a2_Vd
 a2_loc=linspace(0,a1_M,a1_M+1)'.*z_spacing;
-a2_Vd=interp1(linspace(1,3000,3000)',a0_Vc,a2_loc);
+a2_Vd=interp1(linspace(1,2000,2000)',a0_Vc,a2_loc);
 a2_Vd(1,1)=a2_Vd(6,1);
 a2_Vd(2,1)=a2_Vd(6,1);
 
@@ -39,17 +36,15 @@ a2_Vd=a2_Vd*e;
 flag0.update('Update potential');
 %% 可调参数
 % 定义scattering 能量
+
 global a3_E
 %a3_E_1=0.31158
 a3_E=a3_E_1*e; %实际能量？
-global a4_theta1
-global a4_theta2
-a4_theta1=0;
-a4_theta2=0;
+
 %% 定义B matrix
 % 定义 B
 b0_Ul=0;
-b0_Ur=a5_alpha.*0.3.*e;
+b0_Ur=0;
 
 
 b1_kl=sqrt(2*me*(a3_E-b0_Ul)/hbar^2);
@@ -76,20 +71,12 @@ flag0.update('Construct B');
 clear -regexp ^b1_Bl_
 clear -regexp ^b1_Br_
 %% 定义D(x)
-D0_21_first=me*1*e/(hbar)^2*-1;  %sigma_z   0.5
-D0_21_second=me*1*e/(hbar)^2*1;
 
 D0=[0 1;0 0];
 D1_D=zeros(a1_M*2+2,2);
 D1_E=zeros(a1_M+1,1);
 for j=1:1:a1_M+1
 D0_it=D0;
-
-%if (j-1)*z_spacing>=277 && (j-1)*z_spacing<=828
-%    D0_it(2,1)=D0_21_first;
-if (j-1)*z_spacing>=1105 && (j-1)*z_spacing<=1656
-    D0_it(2,1)=D0_21_second;
-end
 
 D0_tmp=-2.*me./hbar^2.*(a3_E-a2_Vd(j,1));
 D0_it(2,1)=D0_it(2,1)+D0_tmp;
@@ -99,7 +86,7 @@ end
 
 flag0.update('Form each D');
 
-flag0.plot2(1,(0:z_spacing:1932)',D1_E ,D1_E,'Xlabel','X (0-1992pm)','Ylabel','Energy','title','Potential at 0.5eV spin splitting','save','false' );
+flag0.plot2(1,(0:z_spacing:z_length)',D1_E ,D1_E,'Xlabel','X (0-1992pm)','Ylabel','Energy','title','Potential at 0.5eV spin splitting','save','false' );
 
 %-------------------------------------检查
 
@@ -121,23 +108,25 @@ clear -regexp ^D2_D
  
 Tm=eye(2);
 
-A_in=[1;0];
+A_in=[1;0];   %Calculate the probabilities
 
-Psi=zeros(a1_M/2+1,2);
-P1=(b1_Bl*A_in)';
-Psi(1,:)=P1;
 for j=1:1:a1_M/2
 Tm=D2_T(2*j-1:2*j,:)*Tm;
-Psi(j+1,:)=(D2_T(2*j-1:2*j,:)*Psi(j,:)')';
 end
 Tau=Tm*b1_Bl;
 M_1=[Tau(1,2) -b1_Br(1,2); -Tau(2,2) b1_Br(2,2)];
 M_2=[-Tau(1,1) b1_Br(1,1); Tau(2,1) -b1_Br(2,1)];
-
 M=M_1\M_2;
-
-
 A_out=M*A_in;
+
+A_l=[1;A_out(1,1)];      % Compute wavefunctions
+Psi=zeros(a1_M/2+1,2);
+Psi_0=(b1_Bl*A_l)';
+Psi(1,:)=Psi_0;
+for j=1:1:a1_M/2
+Psi(j+1,:)=(D2_T(2*j-1:2*j,:)*Psi(j,:)')';
+end
+
 Prob=conj(A_out).*A_out
 P_up=Prob(2);P_down=Prob(2);
 
