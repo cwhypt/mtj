@@ -1,8 +1,8 @@
 function [P_up,P_down]=T(a3_E_1)
 %% 定义基本量
 % Assume the width is 3 nm
-global flag0
-
+global flag1
+flag1=flag;
 global a5_alpha
 a5_alpha=0.05;
 global z_spacing
@@ -36,7 +36,7 @@ a2_Vd(2,1)=a2_Vd(6,1);
 
 a2_Vd=a2_Vd*e;
 
-flag0.update('Update potential');
+flag1.update('Update potential');
 %% 可调参数
 % 定义scattering 能量
 global a3_E
@@ -72,7 +72,7 @@ b1_Br_22=1i*exp(1i*b1_kr*b0_x_R)*b1_kr.*eye(2);
 
 b1_Br=[b1_Br_11 b1_Br_12;b1_Br_21 b1_Br_22];
 
-flag0.update('Construct B');
+flag1.update('Construct B');
 clear -regexp ^b1_Bl_
 clear -regexp ^b1_Br_
 %% 定义D(x)
@@ -99,9 +99,9 @@ D1_D_up(j,1)=D0_it(3,1);
 D1_D_down(j,1)=D0_it(4,2);
 end
 
-flag0.update('Form each D');
+flag1.update('Form each D');
 
-flag0.plot2(1,(0:z_spacing:1932)',D1_D_up ,D1_D_down,'Xlabel','X (0-1992pm)','Ylabel','Energy','title','Potential at 0.5eV spin splitting','save','false' );
+flag1.plot2(1,(0:z_spacing:1932)',D1_D_up ,D1_D_down,'Xlabel','X (0-1992pm)','Ylabel','Energy','title','Potential at 0.5eV spin splitting','save','false' );
 
 %-------------------------------------检查
 
@@ -119,7 +119,7 @@ for j=0:1:a1_M/2-1
 D2_T((4*j+1):4*j+4,1:4)=eye(4)+deltax/6.*(D2_D1+2*D2_D2+2*D2_D3+D2_D4);
 end
 clear -regexp ^D2_D
- flag0.update('Transform T');
+ flag1.update('Transform T');
  
 Tm=eye(4);
 
@@ -146,17 +146,17 @@ end
 Prob=conj(A_out).*A_out
 P_up=Prob(3);P_down=Prob(4);
 
-Psi_x=0:z_spacing*z_length;
+Psi_x=0:z_spacing*2:z_length;
 Psi_real=conj(Psi).*Psi;
 
- flag0.update('Data manipulation');
+ flag1.update('Data manipulation');
 
 str = sprintf('T-up: %0.1e,T-down: %0.1e',Prob(3,1),Prob(4,1));
-flag0.plot2(2,Psi_x',Psi_real(:,1) ,Psi_real(:,2),'Xlabel','X (0-1992pm)','Ylabel','Wavefunction','title',sprintf('Wavefunction at incident energy E=%d',a3_E_1),'save','true','annotation',str);
+flag1.plot2(2,Psi_x',Psi_real(:,1) ,Psi_real(:,2),'Xlabel','X (0-1992pm)','Ylabel','Wavefunction','title',sprintf('Wavefunction at incident energy E=%d',a3_E_1),'save','true','annotation',str);
 
 
 %clear me e hbar
 clear -regexp ^sigma_
 
- flag0.update('End');
+ flag1.update('End');
 end
