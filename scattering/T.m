@@ -2,7 +2,7 @@ function [P_up,P_down]=T(a3_E_1)
 %% 定义基本量
 % Assume the width is 3 nm
 global flag0
-
+flag0=flag;
 global a5_alpha
 a5_alpha=0.05;
 global z_spacing
