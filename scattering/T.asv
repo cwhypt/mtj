@@ -1,4 +1,4 @@
-function [P_up,P_down]=T(a3_E_1,theta)
+function [P_up,P_down]=T(a3_E_1,theta2)
 %% 定义基本量
 % Assume the width is 3 nm
 global flag1
@@ -45,7 +45,7 @@ a3_E=a3_E_1*e; %实际能量？
 global a4_theta1
 global a4_theta2
 a4_theta1=0;
-a4_theta2=theta;
+a4_theta2=pi;
 %% 定义B matrix
 % 定义 B
 b0_Ul=0;
@@ -101,7 +101,7 @@ end
 
 flag1.update('Form each D');
 
-%flag1.plot2(1,(0:z_spacing:1932)',D1_D_up ,D1_D_down,'Xlabel','X (0-1992pm)','Ylabel','Energy','title','Potential at 0.5eV spin splitting','save','false' );
+flag1.plot2(1,(0:z_spacing:1932)',D1_D_up ,D1_D_down,'Xlabel','X (0-1992pm)','Ylabel','Energy','title','Potential at 0.5eV spin splitting','save','false' );
 
 %-------------------------------------检查
 
