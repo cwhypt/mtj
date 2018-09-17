@@ -123,7 +123,6 @@ clear -regexp ^D2_D
  
 Tm=eye(4);
 
-A_in=[1/sqrt(2);1/sqrt(2);0;0];
 
 for j=1:1:a1_M/2
 Tm=D2_T(4*j-3:4*j,:)*Tm;
@@ -134,8 +133,10 @@ M_1=[Tau(1:2,3:4) -b1_Br(1:2,3:4); -Tau(3:4,3:4) b1_Br(3:4,3:4)];
 M_2=[-Tau(1:2,1:2) b1_Br(1:2,1:2); Tau(3:4,1:2) -b1_Br(3:4,1:2)];
 M=M_1\M_2;
 
+
+A_in=[1/sqrt(2);0;0;0];  %全部从左上进
 A_out=M*A_in;
-A_l=[1/sqrt(2);1/sqrt(2);A_out(1:2,1)];      % Compute wavefunctions
+A_l=[1/sqrt(2);0;A_out(1:2,1)];      % Compute wavefunctions
 Psi=zeros(a1_M/2+1,4);
 P1=(b1_Bl*A_l)';
 Psi(1,:)=P1;
@@ -145,7 +146,22 @@ end
 
 M_real=conj(M).*M; % important
 Prob=conj(A_out).*A_out;
-P_up=Prob(3);P_down=Prob(4);
+P_up=Prob(4);
+
+
+A_in=[0;1/sqrt(2);0;0];   %从左下进
+A_out=M*A_in;
+A_l=[0;1/sqrt(2);A_out(1:2,1)];      % Compute wavefunctions
+Psi=zeros(a1_M/2+1,4);
+P1=(b1_Bl*A_l)';
+Psi(1,:)=P1;
+for j=1:1:a1_M/2
+Psi(j+1,:)=(D2_T(4*j-3:4*j,:)*Psi(j,:)')';
+end
+
+M_real=conj(M).*M; % important
+Prob=conj(A_out).*A_out;
+P_down=Prob(3);
 
 Psi_x=0:z_spacing*2:z_length;
 Psi_real=conj(Psi).*Psi;
