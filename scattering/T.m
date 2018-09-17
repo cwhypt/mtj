@@ -143,7 +143,7 @@ for j=1:1:a1_M/2
 Psi(j+1,:)=(D2_T(4*j-3:4*j,:)*Psi(j,:)')';
 end
 
-M_real=conj(M).*M
+M_real=conj(M).*M; % important
 Prob=conj(A_out).*A_out;
 P_up=Prob(3);P_down=Prob(4);
 
@@ -153,7 +153,7 @@ Psi_real=conj(Psi).*Psi;
  flag1.update('Data manipulation');
 
 str = sprintf('T-up: %0.1e,T-down: %0.1e',Prob(3,1),Prob(4,1));
-flag1.plot2(2,Psi_x',Psi_real(:,1) ,Psi_real(:,2),'Xlabel','X (0-1992pm)','Ylabel','Wavefunction','title',sprintf('Wavefunction at incident energy E=%d',a3_E_1),'save','true','annotation',str);
+%flag1.plot2(2,Psi_x',Psi_real(:,1) ,Psi_real(:,2),'Xlabel','X (0-1992pm)','Ylabel','Wavefunction','title',sprintf('Wavefunction at incident energy E=%d',a3_E_1),'save','true','annotation',str);
 
 
 %clear me e hbar
