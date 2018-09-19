@@ -1,18 +1,21 @@
-T_x=linspace(0,5,51)';
+T_x=linspace(0,1,51)';
 T_sc=zeros(51,2);
 count=1;
 global flag0
 flag0=flag;
 h=figure;
 h.Position=[50 50 1200 700];
-for j=0:pi/9:pi
+for k=0.5:0.5:5  
     count=1;
-    for k=0:0.1:5
+    for j=0:pi/50:pi
         [T_sc(count,1),T_sc(count,2)]=T(k,j);
         count=count+1;
-
+        
     end
-    flag0.plotsev(h,T_x,T_sc(:,1),T_sc(:,2), 'Xlabel','E_{inc} (eV)','Ylabel','|t^L_{u-u}|^2 and |t^L_{d-d}|^2','title',sprintf('Prob vs. E_{inc}'),'Y1legend',sprintf('UU-¦È_2=%0.1f',j/pi),'Y2legend',sprintf('DD-¦È_2=%0.1f',j/pi),'save','true','clear','false');
+    T_sc_order=max(T_sc);%10.^floor( log10(max(T_sc))); %¼ÆËãÖ¸Êý
+    T_sc_order_matrix=repmat(T_sc_order,51,1);
+    T_sc=T_sc./T_sc_order_matrix;
+    flag0.plotsev(h,T_x,T_sc(:,1),T_sc(:,2), 'Xlabel','¦È_2 (pi)','Ylabel','|t^L_{u-d}|^2 and |t^L_{d-u}|^2','title',sprintf('Prob vs. ¦È_2'),'Y1legend',sprintf('UD-E_{inc}=%0.1feV-%0.0e',k,T_sc_order(1)),'Y2legend',sprintf('DU-E_{inc}=%0.1feV-%0.0e',k,T_sc_order(2)),'save','true','clear','false');
     
 end
 
