@@ -136,8 +136,8 @@ M=M_1\M_2;
 
 M_real=conj(M).*M; % important
 
-P_up=M_real(4,1);
-P_down=M_real(3,2);
+P_up=M_real(3,1);
+P_down=M_real(4,2);
 
 
 %{
