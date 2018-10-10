@@ -1,4 +1,4 @@
-function [P_up,P_down]=T(a3_E_1,theta)
+function [P_up,P_down,M,kx]=T(a3_E_1,theta)
 %% 定义基本量
 % Assume the width is 3 nm
 global flag1
@@ -44,8 +44,8 @@ global a3_E
 a3_E=a3_E_1*e; %实际能量？
 global a4_theta1
 global a4_theta2
-a4_theta1=0;
-a4_theta2=theta;
+a4_theta1=theta;
+a4_theta2=0;
 %% 定义B matrix
 % 定义 B
 b0_Ul=0;
@@ -55,6 +55,7 @@ b0_Ur=a5_alpha.*0.3.*e;
 b1_kl=sqrt(2*me*(a3_E-b0_Ul)/hbar^2);
 b1_kr=sqrt(2*me*(a3_E-b0_Ur)/hbar^2);
 
+kx=b1_kl;
 %定义B matrix
 
 b1_Bl_11=eye(2);
