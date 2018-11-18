@@ -1,4 +1,4 @@
-function [n11,n12,n13,n21,n22,n23]=N(M,theta1,kx,Psi)
+function [n11,n12,n13,n21,n22,n23,cl11,cl12,cl13,cr11,cr12,cr13]=N(M,theta1,kx,Psi)
 Psil1=Psi(69,:);   Psir1=Psi(207,:);
 Psil2=Psi(276,:);   Psir2=Psi(411,:);
 
@@ -17,6 +17,14 @@ Qright2=imag([conj(Psir2(1))*Psir2(4)+conj(Psir2(2))*Psir2(3); ...
 n11=Qleft1(1)-Qright1(1);n12=Qleft1(2)-Qright1(2);n13=Qleft1(3)-Qright1(3);
 n21=Qleft2(1)-Qright2(1);n22=Qleft2(2)-Qright2(2);n23=Qleft2(3)-Qright2(3);
 
+%% For debug use
+sigma=[[0 1;1 0],[0,-1i;1i,0],[1 0;0,-1]];
+cl11=[conj(Psil1(1)),conj(Psil1(2))]*sigma(1)*[Psil1(1);Psil1(2)];
+cr11=[conj(Psir1(1)),conj(Psir1(2))]*sigma(1)*[Psir1(1);Psir1(2)];    
+cl12=[conj(Psil1(1)),conj(Psil1(2))]*sigma(2)*[Psil1(1);Psil1(2)];
+cr12=[conj(Psir1(1)),conj(Psir1(2))]*sigma(2)*[Psir1(1);Psir1(2)];    
+cl13=[conj(Psil1(1)),conj(Psil1(2))]*sigma(3)*[Psil1(1);Psil1(2)];
+cr13=[conj(Psir1(1)),conj(Psir1(2))]*sigma(3)*[Psir1(1);Psir1(2)];   
 end
 %{
 tuu=M(3,1);tdu=M(3,2);tud=M(4,1);tdd=M(4,2);
