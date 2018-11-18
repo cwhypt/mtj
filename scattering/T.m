@@ -1,4 +1,4 @@
-function [P_up,P_down,M,kx]=T(a3_E_1,theta)
+function [P_up,P_down,M,kx,Psi]=T(a3_E_1,theta)
 %% 定义基本量
 % Assume the width is 3 nm
 global flag1
@@ -141,22 +141,16 @@ P_up=M_real(4,1);
 P_down=M_real(3,2);
 
 
-%{
-A_in=[1/sqrt(2);0;0;0];  %全部从左上进
+
+A_in=[1/sqrt(2);1/sqrt(2);0;0];  %全部从左上进
 A_out=M*A_in;
-A_l=[1/sqrt(2);0;A_out(1:2,1)];      % Compute wavefunctions
+A_l=[1/sqrt(2);1/sqrt(2);A_out(1:2,1)];      % Compute wavefunctions
 Psi=zeros(a1_M/2+1,4);
 P1=(b1_Bl*A_l)';
 Psi(1,:)=P1;
 for j=1:1:a1_M/2
 Psi(j+1,:)=(D2_T(4*j-3:4*j,:)*Psi(j,:)')';
 end
-
-M_real=conj(M).*M; % important
-Prob=conj(A_out).*A_out;
-P_up=Prob(4);
-%}
-
 
 
  flag1.update('Data manipulation');
