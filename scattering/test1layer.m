@@ -9,8 +9,6 @@ global flag1
 flag1=flag;
 h=figure(1);
 h.Position=[50 0 1000 600];
-h1=figure(2);
-h1.Position=[50 0 1000 600];
 C_sc1=zeros(51,6);
 C_sc2=zeros(51,6);
  k=0.05  %Energy
@@ -22,7 +20,7 @@ C_sc2=zeros(51,6);
         
     end
     
-flag1.plot2(2,T_x,T_sc(:,1),T_sc(:,2));    
+%flag1.plot2(2,T_x,T_sc(:,1),T_sc(:,2));    
 flag0.plotsub3(h,2,2,T_x, Q_sc(:,1), Q_sc(:,2),Q_sc(:,3), 'Xlabel','theta_1 (\pi)','Ylabel','N_{st} for layer 1','title',sprintf('Incident E=%0.2feV',k),'Y1legend',sprintf('x'),'Y2legend',sprintf('y'),'Y3legend',sprintf('z'),'save','false','clear','false');
 flag0.plotsub3(h,2,2,T_x, C_sc1(:,1), C_sc1(:,2),C_sc1(:,3), 'Xlabel','theta_1 (\pi)','Ylabel','Spin current in layer1 left','title',sprintf('Incident E=%0.2feV',k),'Y1legend',sprintf('x'),'Y2legend',sprintf('y'),'Y3legend',sprintf('z'),'save','false','clear','false');
 flag0.plotsub3(h,2,2, T_x, C_sc1(:,4), C_sc1(:,5),C_sc1(:,6), 'Xlabel','theta_1 (\pi)','Ylabel','Spin current in layer1 right','title',sprintf('Incident E=%0.2feV',k),'Y1legend',sprintf('x'),'Y2legend',sprintf('y'),'Y3legend',sprintf('z'),'save','false','clear','false');
