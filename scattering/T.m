@@ -142,9 +142,9 @@ P_down=M_real(3,2);
 
 
 
-A_in=[1/sqrt(2);1/sqrt(2);0;0];  %全部从左上进
+A_in=[1;0;0;0];  %全部从左上进
 A_out=M*A_in;
-A_l=[1/sqrt(2);1/sqrt(2);A_out(1:2,1)];      % Compute wavefunctions
+A_l=[1;0;A_out(1:2,1)];      % Compute wavefunctions
 Psi=zeros(a1_M/2+1,4);
 P1=(b1_Bl*A_l)';
 Psi(1,:)=P1;
