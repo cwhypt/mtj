@@ -1,4 +1,4 @@
-function [P_up,P_down,M,kx,Psi]=T(a3_E_1,theta)
+function [P_up,P_down,M,kx,Psi]=T1layer(a3_E_1,theta)
 %% 定义基本量
 % Assume the width is 3 nm
 global flag1
@@ -15,13 +15,10 @@ a0_Vc=zeros(3000,1);
 a0_Vc(1:276,1)=4;
 a0_Vc(277:828,1)=-0.12;
 a0_Vc(829:1104,1)=4;
-a0_Vc(1105:1656,1)=-0.12;
-a0_Vc(1657:1932,1)=4;
-a0_Vc=a0_Vc+linspace(1,3000,3000)'./1932.*a5_alpha; %单位？
 %plot(a0_Vc)
 
 % 定义每一步长度  Defines the number of steps(in 1/2 step)
-z_length=1932;
+z_length=1104;
 z_spacing=2;    %69
 global a1_M
 a1_M=floor(z_length/z_spacing);
@@ -78,7 +75,7 @@ clear -regexp ^b1_Bl_
 clear -regexp ^b1_Br_
 %% 定义D(x)
 D0_21_first=me*0.5*e/(hbar)^2*(sin(a4_theta1).*sigma_x +cos(a4_theta1).*sigma_z);  %   0.5
-D0_21_second=me*0.5*e/(hbar)^2*(sin(a4_theta2).*sigma_x +cos(a4_theta2).*sigma_z);
+%D0_21_second=me*0.5*e/(hbar)^2*(sin(a4_theta2).*sigma_x +cos(a4_theta2).*sigma_z);
 
 D0=[zeros(2) eye(2);zeros(2) zeros(2)];
 D1_D=zeros(a1_M*4+4,4);
@@ -89,8 +86,7 @@ D0_it=D0;
 
 if (j-1)*z_spacing>=277 && (j-1)*z_spacing<=828
     D0_it(3:4,1:2)=D0_21_first;
-elseif (j-1)*z_spacing>=1105 && (j-1)*z_spacing<=1656
-    D0_it(3:4,1:2)=D0_21_second;
+
 end
 
 D0_tmp=-2.*me./hbar^2.*(a3_E-a2_Vd(j,1)).*eye(2);
@@ -142,9 +138,9 @@ P_down=M_real(3,2);
 
 
 
-A_in=[0;1;0;0];  %全部从左上进
+A_in=[1;0;0;0];  %全部从左上进
 A_out=M*A_in;
-A_l=[0;1;A_out(1:2,1)];      % Compute wavefunctions
+A_l=[1;0;A_out(1:2,1)];      % Compute wavefunctions
 Psi=zeros(a1_M/2+1,4);
 P1=(b1_Bl*A_l)';
 Psi(1,:)=P1;
