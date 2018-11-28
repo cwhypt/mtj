@@ -17,7 +17,7 @@ a0_Vc(277:828,1)=-0.12;
 a0_Vc(829:1104,1)=4;
 a0_Vc(1105:1656,1)=-0.12;
 a0_Vc(1657:1932,1)=4;
-a0_Vc=a0_Vc+linspace(1,3000,3000)'./1932.*a5_alpha; %单位？
+%a0_Vc=a0_Vc+linspace(1,3000,3000)'./1932.*a5_alpha; %单位？
 %plot(a0_Vc)
 
 % 定义每一步长度  Defines the number of steps(in 1/2 step)
@@ -49,7 +49,7 @@ a4_theta2=0;
 %% 定义B matrix
 % 定义 B
 b0_Ul=0;
-b0_Ur=a5_alpha.*0.3.*e;
+b0_Ur=0;%a5_alpha.*0.3.*e;
 
 
 b1_kl=sqrt(2*me*(a3_E-b0_Ul)/hbar^2);
@@ -142,9 +142,9 @@ P_down=M_real(3,2);
 
 
 
-A_in=[0;1;0;0];  %全部从左上进
+A_in=[1;0;0;0];  %全部从左上进
 A_out=M*A_in;
-A_l=[0;1;A_out(1:2,1)];      % Compute wavefunctions
+A_l=[1;0;A_out(1:2,1)];      % Compute wavefunctions
 Psi=zeros(a1_M/2+1,4);
 P1=(b1_Bl*A_l)';
 Psi(1,:)=P1;

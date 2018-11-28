@@ -74,7 +74,7 @@ flag1.update('Construct B');
 clear -regexp ^b1_Bl_
 clear -regexp ^b1_Br_
 %% ∂®“ÂD(x)
-D0_21_first=me*0.5*e/(hbar)^2*(sin(a4_theta1).*sigma_y +cos(a4_theta1).*sigma_z);  %   0.5
+D0_21_first=me*0.5*e/(hbar)^2*(sin(a4_theta1).*sigma_x +cos(a4_theta1).*sigma_z);  %   0.5
 %D0_21_second=me*0.5*e/(hbar)^2*(sin(a4_theta2).*sigma_x +cos(a4_theta2).*sigma_z);
 
 D0=[zeros(2) eye(2);zeros(2) zeros(2)];
