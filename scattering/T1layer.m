@@ -1,4 +1,4 @@
-function [P_up,P_down,M,kx,Psi]=T1layer(a3_E_1,theta)
+function [puu,pdd,pdu,pud,ruu,rdd,rdu,rud,M,kx,Psi]=T1layer(a3_E_1,theta)
 %% 定义基本量
 % Assume the width is 3 nm
 global flag1
@@ -133,10 +133,15 @@ M=M_1\M_2;
 
 M_real=conj(M).*M; % important
 
-P_up=M_real(4,1);
-P_down=M_real(3,2);
+puu=M_real(3,1);
+pdd=M_real(4,2);
+pud=M_real(4,1);
+pdu=M_real(3,2);
 
-
+ruu=M_real(1,1);
+rdd=M_real(2,2);
+rud=M_real(2,1);
+rdu=M_real(1,2);
 
 A_in=[1;0;0;0];  %全部从左上进
 A_out=M*A_in;
