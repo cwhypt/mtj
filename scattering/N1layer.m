@@ -1,7 +1,9 @@
-function [n11,n12,n13,cl11,cl12,cl13,cr11,cr12,cr13]=N1layer(M,theta1,kx,Psi)
+function [n11,n12,n13,cl11,cl12,cl13,cr11,cr12,cr13,Cur]=N1layer(M,theta1,kx,Psi)
 Psil1=Psi(1,:);   Psir1=Psi(276,:);
 
-
+Cur=imag([conj(Psi(:,1)).*Psi(:,4)+conj(Psi(:,2)).*Psi(:,3),...
+            -1i.*conj(Psi(:,1)).*Psi(:,4)+1i.*conj(Psi(:,2)).*Psi(:,3), ...  %hbar^2/2m
+              conj(Psi(:,1)).*Psi(:,3)-conj(Psi(:,2)).*Psi(:,4)]);
 theta1=0;
 tuu=M(3,1);tdu=M(3,2);tud=M(4,1);tdd=M(4,2);
 ruu=M(1,1);rdu=M(1,2);rud=M(2,1);rdd=M(2,2);
