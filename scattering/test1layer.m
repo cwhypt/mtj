@@ -20,6 +20,7 @@ C_sc2=zeros(51,6);
         [T_sc(count,1),T_sc(count,4),T_sc(count,2),T_sc(count,3),R_sc(count,1),R_sc(count,4),R_sc(count,2),R_sc(count,3),M,kx,Psi]=T1layer(k,j);
          [Q_sc(count,1),Q_sc(count,2),Q_sc(count,3),C_sc1(count,1),C_sc1(count,2),C_sc1(count,3),C_sc1(count,4),C_sc1(count,5),C_sc1(count,6),Cur]=N1layer(M,j,kx,Psi);
         count=count+1;
-flag0.plot3(h,Cur_x, Cur(:,1), Cur(:,2),Cur(:,3), 'Xlabel','Location (nm)','Ylabel','Spin currents','title',sprintf('Layer angle %0.2f pi',j/pi),'Y1legend',sprintf('x'),'Y2legend',sprintf('y'),'Y3legend',sprintf('z'),'save','true','clear','true');
+flag0.plotsub3(h,2,5,Cur_x, Cur(:,1), Cur(:,2),Cur(:,3), 'Xlabel','Location (nm)','Ylabel','Spin currents','title',sprintf('Layer angle %0.2f pi',j/pi),'Y1legend',sprintf('x'),'Y2legend',sprintf('y'),'Y3legend',sprintf('z'),'save','true','clear','true');
 
     end
+
