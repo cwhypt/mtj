@@ -1,5 +1,4 @@
-function [P_up,P_down,M,kx,Psi]=T(a3_E_1,theta)
-%% 定义基本量
+function [puu,pdd,pdu,pud,ruu,rdd,rdu,rud,M,kx,Psi]=T(a3_E_1,theta)
 % Assume the width is 3 nm
 global flag1
 flag1=flag;
@@ -134,13 +133,17 @@ M_1=[Tau(1:2,3:4) -b1_Br(1:2,3:4); -Tau(3:4,3:4) b1_Br(3:4,3:4)];
 M_2=[-Tau(1:2,1:2) b1_Br(1:2,1:2); Tau(3:4,1:2) -b1_Br(3:4,1:2)];
 M=M_1\M_2;
 
-
 M_real=conj(M).*M; % important
 
-P_up=M_real(4,1);
-P_down=M_real(3,2);
+puu=M_real(3,1);
+pdd=M_real(4,2);
+pud=M_real(4,1);
+pdu=M_real(3,2);
 
-
+ruu=M_real(1,1);
+rdd=M_real(2,2);
+rud=M_real(2,1);
+rdu=M_real(1,2);
 
 A_in=[1;0;0;0];  %全部从左上进
 A_out=M*A_in;
@@ -157,6 +160,8 @@ end
 
 %str = sprintf('T-up: %0.1e,T-down: %0.1e',Prob(3,1),Prob(4,1));
 %flag1.plot2(2,Psi_x',Psi_real(:,1) ,Psi_real(:,2),'Xlabel','X (0-1992pm)','Ylabel','Wavefunction','title',sprintf('Wavefunction at incident energy E=%d',a3_E_1),'save','true','annotation',str);
+
+
 
 
 %clear me e hbar
