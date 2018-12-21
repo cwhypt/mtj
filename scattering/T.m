@@ -1,4 +1,4 @@
-function [puu,pdd,pdu,pud,ruu,rdd,rdu,rud,M,kx,Psi]=T(a3_E_1,theta)
+function [p_up,p_down,puu,pdd,pdu,pud,ruu,rdd,rdu,rud,M,kx,Psi]=T(a3_E_1,theta)
 % Assume the width is 3 nm
 global flag1
 flag1=flag;
@@ -145,9 +145,12 @@ rdd=M_real(2,2);
 rud=M_real(2,1);
 rdu=M_real(1,2);
 
-A_in=[1;0;0;0];  %全部从左上进
+p_up=M_real(3,1)+M_real(3,2);
+p_down=M_real(3,2)+M_real(4,2);
+
+A_in=[1;1;0;0];  %全部从左上进
 A_out=M*A_in;
-A_l=[1;0;A_out(1:2,1)];      % Compute wavefunctions
+A_l=[1;1;A_out(1:2,1)];      % Compute wavefunctions
 Psi=zeros(a1_M/2+1,4);
 P1=(b1_Bl*A_l)';
 Psi(1,:)=P1;
