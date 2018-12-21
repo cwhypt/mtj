@@ -1,4 +1,4 @@
-function [n11,n12,n13,n21,n22,n23,cl11,cl12,cl13,cr11,cr12,cr13]=N1layer(M,theta1,kx,Psi)
+function [n11,n12,n13,n21,n22,n23,cl11,cl12,cl13,cr11,cr12,cr13,Cur]=N1layer(M,theta1,kx,Psi)
 Psil1=Psi(69,:);   Psir1=Psi(208,:);
 Psil2=Psi(276,:); Psir2=Psi(414,:);
 
@@ -19,6 +19,9 @@ Qright2=imag([conj(Psir2(1))*Psir2(4)+conj(Psir2(2))*Psir2(3); ...
 n11=Qleft1(1)-Qright1(1);n12=Qleft1(2)-Qright1(2);n13=Qleft1(3)-Qright1(3);       
 n21=Qleft2(1)-Qright2(1);n22=Qleft2(2)-Qright2(2);n23=Qleft2(3)-Qright2(3);
 
+Cur=imag([conj(Psi(:,1)).*Psi(:,4)+conj(Psi(:,2)).*Psi(:,3),...
+            -1i.*conj(Psi(:,1)).*Psi(:,4)+1i.*conj(Psi(:,2)).*Psi(:,3), ...  %hbar^2/2m
+              conj(Psi(:,1)).*Psi(:,3)-conj(Psi(:,2)).*Psi(:,4)]);
 
 sigma=[[0 1;1 0],[0,-1i;1i,0],[1 0;0,-1]];
 cl11=Qleft1(1);
